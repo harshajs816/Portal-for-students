@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse'; 
 import { initializeApp } from "firebase/app";
+import { FIXED_STUDENT_LIST } from './studentsData';
 // Yahan 'doc' ko import karna zaroori hai 👇
 import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, deleteDoc, doc } from "firebase/firestore";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,10 +31,7 @@ const db = getFirestore(app);
 export default function StudentPortal() {
   
   // --- STATES ---
-  const [allStudents, setAllStudents] = useState(() => {
-    const savedData = localStorage.getItem("studentsList");
-    return savedData ? JSON.parse(savedData) : [];
-  });
+const [allStudents, setAllStudents] = useState(FIXED_STUDENT_LIST);
   
   const [paidStudents, setPaidStudents] = useState({});
   const [fullName, setFullName] = useState("");
@@ -188,30 +186,6 @@ const deleteSubmission = async (studentName) => {
           {/* LEFT: ADMIN & SUBMISSION */}
           <div className="col-lg-5 d-flex flex-column gap-4">
             
-            {/* Admin Tools Card */}
-            <div className="card border-0 shadow-sm rounded-4">
-              <div className="card-body p-4">
-                <h6 className="text-muted text-uppercase fw-bold tracking-wide mb-4" style={{ letterSpacing: '1px', fontSize: '0.8rem' }}>
-                  Admin Control Panel
-                </h6>
-                
-                <div className="mb-3">
-                  <label className="form-label fw-bold text-dark small">Upload Students (CSV)</label>
-                  <input 
-                    type="file" 
-                    accept=".csv" 
-                    onChange={handleBulkUpload} 
-                    className="form-control bg-light"
-                  />
-                </div>
-                
-                <button onClick={clearAllData} className="btn btn-outline-danger w-100 fw-bold">
-                  Clear List
-                </button>
-              </div>
-            </div>
-
-            {/* Submission Form Card */}
             <div className="card border-0 shadow rounded-4">
               <div className="card-body p-5">
                 <h2 className="fw-bolder text-dark mb-1">Submit Receipt</h2>
